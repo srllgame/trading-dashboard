@@ -1,31 +1,23 @@
 
-# TraderSync-Style Trading Dashboard 🖥️📈
+# TraderSync-Style Trading Dashboard (Custom Themed)
 
-This is a web-based trading dashboard that replicates the core functionality and sleek dark style of TraderSync!
+This Streamlit dashboard replicates TraderSync's visual style with neon dark theme and powerful analytics.
 
 ## Features
-- Upload your `closedPositionsTab.csv` trade data
-- Visualize:
-  - Cumulative PnL over time
-  - Total profit by symbol
-  - Win/Loss ratio donut chart
-  - Hourly profitability
-- View a dynamic trade log with auto-labeled setups
-- Dark theme for a modern trading UI
+- Custom dark theme with Poppins font and neon accents
+- Setup tagging (Gap Up, Reversal, Standard)
+- Win/loss detection and violation tracking
+- Setup performance analysis
+- Filters: Symbol, Setup, Side, Weekday
+- Heatmap by Hour and Weekday
+- Risk enforcement: daily & per-trade
 
-## How to Run Locally
-
+## Run Locally
 ```bash
 pip install -r requirements.txt
 streamlit run app.py
 ```
 
-## How to Deploy (Free)
-- Upload this project to a public GitHub repository
-- Connect it to [Streamlit Cloud](https://streamlit.io/cloud)
-- Click 'New App', select your repo, and deploy!
-
-✅ Ready to level up your trading analysis.
-
----
-Built with ❤️ using Python, Streamlit, and Plotly.
+## Deploy to Streamlit Cloud
+- Push to GitHub
+- Link to Streamlit Cloud
