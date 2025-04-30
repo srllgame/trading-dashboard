@@ -1,11 +1,10 @@
 
 # 📜 Changelog
 
-## [1.2.0] - 2024-04-30
-### Added
-- Full custom UI theme (dark, neon-style, Poppins font)
-- TraderSync-inspired layout and color scheme
+## [1.2.1] - 2024-04-30
+### Fixed
+- Resolved issue where UI showed only upload prompt
+- Restored full dashboard logic: filters, plots, setup stats, heatmap
 
-## [1.1.0]
-- Setup tagging and performance metrics
-- Risk enforcement for $100 loss, daily and max drawdowns
+### Updated
+- Neon dark theme with Poppins font

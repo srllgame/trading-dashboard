@@ -1,23 +1,16 @@
 
-# TraderSync-Style Trading Dashboard (Custom Themed)
+# TraderSync-Style Trading Dashboard (Restored + Themed)
 
-This Streamlit dashboard replicates TraderSync's visual style with neon dark theme and powerful analytics.
+This version fully restores dashboard functionality and UI with all filters, heatmaps, and analysis enabled.
 
 ## Features
-- Custom dark theme with Poppins font and neon accents
-- Setup tagging (Gap Up, Reversal, Standard)
-- Win/loss detection and violation tracking
-- Setup performance analysis
-- Filters: Symbol, Setup, Side, Weekday
-- Heatmap by Hour and Weekday
-- Risk enforcement: daily & per-trade
+- Upload trade data and auto-analyze setups, profitability, time stats
+- Risk breach detection ($100/trade, $1500/day, $2500 total)
+- Setup win rates, heatmap by weekday/hour
+- Fully custom dark theme + Poppins font
 
-## Run Locally
+## Usage
 ```bash
 pip install -r requirements.txt
 streamlit run app.py
 ```
-
-## Deploy to Streamlit Cloud
-- Push to GitHub
-- Link to Streamlit Cloud
