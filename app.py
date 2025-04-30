@@ -34,11 +34,21 @@ if uploaded_file:
     df['Open time'] = pd.to_datetime(df['Open time'])
     df['Date'] = df['Close time'].dt.date
     df['Hour'] = df['Open time'].dt.hour
+    df['Weekday'] = df['Open time'].dt.day_name()
 
     # Auto-label win/loss and side
     df['Result'] = df['Profit'].apply(lambda x: 'WIN' if x > 0 else 'LOSS')
     df['Side'] = df['Side'].str.upper()
     df['Setup'] = np.where(df['Profit'] > 200, 'Gap Up', np.where(df['Profit'] < -200, 'Reversal', 'Standard'))
+
+    # Filters
+    st.sidebar.subheader("🔎 Filters")
+    symbols = st.sidebar.multiselect("Symbol", sorted(df['Symbol'].unique()), default=list(df['Symbol'].unique()))
+    setups = st.sidebar.multiselect("Setup", sorted(df['Setup'].unique()), default=list(df['Setup'].unique()))
+    sides = st.sidebar.multiselect("Side", sorted(df['Side'].unique()), default=list(df['Side'].unique()))
+    weekdays = st.sidebar.multiselect("Weekday", sorted(df['Weekday'].unique()), default=list(df['Weekday'].unique()))
+
+    df = df[df['Symbol'].isin(symbols) & df['Setup'].isin(setups) & df['Side'].isin(sides) & df['Weekday'].isin(weekdays)]
 
     # Risk limits
     daily_limit = -1500
@@ -99,6 +109,34 @@ if uploaded_file:
     hourly_perf = df.groupby('Hour')["Profit"].sum().reset_index()
     fig_hour = px.bar(hourly_perf, x="Hour", y="Profit", title="Hourly Profitability")
     st.plotly_chart(fig_hour, use_container_width=True)
+
+    # Weekday x Hour Heatmap
+    st.subheader("🧭 Trade Timing Heatmap")
+    heatmap_data = df.groupby(['Weekday', 'Hour'])["Profit"].sum().reset_index()
+    heatmap_pivot = heatmap_data.pivot(index="Weekday", columns="Hour", values="Profit").fillna(0)
+    heatmap_pivot = heatmap_pivot.loc[["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]]  # Keep weekday order
+    fig_heatmap = px.imshow(
+        heatmap_pivot,
+        color_continuous_scale='RdYlGn',
+        labels=dict(x="Hour", y="Weekday", color="Profit ($)"),
+        title="Profit Heatmap by Weekday and Hour"
+    )
+    st.plotly_chart(fig_heatmap, use_container_width=True)
+
+    # Setup performance
+    st.subheader("📊 Setup Performance")
+    setup_stats = df.groupby("Setup").agg(
+        Trades=("ID", "count"),
+        WinRate=("Result", lambda x: (x == "WIN").mean() * 100),
+        AvgReturn=("Profit", "mean"),
+        TotalProfit=("Profit", "sum")
+    ).reset_index().sort_values(by="TotalProfit", ascending=False)
+    st.dataframe(setup_stats.round(2))
+
+    fig_setup = px.bar(setup_stats, x="TotalProfit", y="Setup", orientation='h',
+                       title="Total Profit by Setup", color="WinRate",
+                       color_continuous_scale="greens")
+    st.plotly_chart(fig_setup, use_container_width=True)
 
     # Trade table
     st.subheader("📋 Trade Log")
